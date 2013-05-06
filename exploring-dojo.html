@@ -1,0 +1,57 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Exploring Dojo</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js"></script>
+  <script>
+    typeof(dojo) === "undefined" && document.write(unescape('%3Cscript src="js/libs/dojo-1.5.min.js"%3E%3C/script%3E'));
+dojo.ready(function() {
+console.log(dojo.byId('message').innerHTML);
+});
+
+dojo.addOnLoad(function() {
+    dojo.create(
+        "div",
+        {
+            "innerHTML": "Hello, World!"
+        },
+        dojo.body()
+    );
+});
+
+dojo.xhrGet({
+    url: "data1.json",
+    handleAs: "json",
+    error: function(e) {
+        var table = "<table border=\"1\">";
+        table += "<tr><th>Error Description</th></tr>";
+        table += "<tr><td>"+e.message+"</td></tr>";
+        table += "</table>";
+        dojo.place(table, dojo.body());
+	return false;
+    },
+    load: function(data) {
+        var table = "<table border=\"1\">";
+        table += "<tr><th>Name</th><th>Age</th></tr>";
+        if(data == null) {
+          table += "<tr><td colspan='2'>No records found!</td></tr>";
+        } else {
+        dojo.forEach(data.people, function(person) {
+            table += "<tr><td>";
+            table += person.first_name+" "+person.last_name;
+            table += "</td><td>";
+            table += person.age;
+            table += "</td></tr>";
+        });
+        }
+        table += "</table>";
+        dojo.place(table, dojo.body());
+    }
+});
+</script>
+</head>
+<body>
+<h3>Exploring Dojo</h3>
+<div id="message">showing flash message</div>
+</body>
+</html>
